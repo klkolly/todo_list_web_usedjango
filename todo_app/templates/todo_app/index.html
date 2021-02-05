@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+
+<head>
+    <meta charset="utf-8">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-primary ">
+        <!-- Navbar content -->
+        <div class="position-relative">
+            <a class="navbar-brand ms-3" href="/">TODO</a>
+        </div>
+        
+    </nav>
+
+
+<div class="container">
+    <h2> index</h2>
+    <div class="row">
+        <form class="row" action="{% url 'add' %}"  method="post">
+            <!-- {% csrf_token %} -->
+            <div class="col-sm-7">
+            <input class="form-control" type="text" name="todo_thing" placeholder="type in here" >
+            </div>
+            <div class="col-sm">
+                <button type="submit" class="btn btn-primary">add</button>
+            </div>
+        </form>
+    </div>
+
+    <br>
+    <ul class="list-group">
+
+        {% for item in todo_list %}
+        <li class="list-group-item" id="list{{item.id}}"> 
+            <input class="task form-check-input me-1" type="checkbox" id="{{item.id}}" >
+            {{item.list_text}} 
+            <form class="float-end" action="{% url 'delete' %}" method="post">
+                <button type="submit" class="btn btn-danger" name="item_id" value="{{item.id}}">delete</button>
+            </form>
+        </li>
+        {% endfor %}
+
+      </ul>
+
+    <script>
+        // get all li
+        check_boxs = document.getElementsByClassName('task form-check-input me-1');
+        
+        for(i=0;i<check_boxs.length;i++ )
+        {   
+            check_boxs[i].addEventListener("click", taskFinish);
+        }
+
+        function taskFinish(){
+            console.log(this.id);
+            console.log("task finish");
+            console.log(this.checked);
+            if(this.checked)
+            {
+                document.getElementById("list"+this.id).className = "list-group-item text-decoration-line-through text-muted";
+            }
+            else
+            {
+                document.getElementById("list"+this.id).className = "list-group-item";
+            }
+        }
+
+
+
+    </script>
+
+</body>
+<footer>
+    
+</footer>
+</div>
+</html>
